@@ -74,5 +74,5 @@ dependencies {
     //本地依赖库：网络请求
     implementation project(path: ':http')
     //本地依赖库：基础库
-//    implementation project(path: ":base")
+    implementation project(path: ":base")
 }
