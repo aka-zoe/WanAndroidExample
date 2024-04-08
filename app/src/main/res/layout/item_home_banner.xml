@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_150">
+
+        <com.youth.banner.Banner
+            android:id="@+id/itemHomeBanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/itemHomeBannerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/black_30"
+            android:gravity="center|start"
+            android:paddingStart="@dimen/dp_10"
+            android:text="banner标题"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="banner标题" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

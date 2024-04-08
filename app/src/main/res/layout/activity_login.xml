@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="loginVm"
+            type="com.zoe.wan.android.example.activity.login.LoginViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/teal_700">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_10"
+            app:cardCornerRadius="@dimen/dp_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/dp_10"
+                android:paddingVertical="@dimen/dp_10">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:background="@drawable/shape_edit_bg"
+                    android:hint="请输入账号"
+                    android:paddingStart="@dimen/dp_10"
+                    android:text="@={loginVm.usernameInput}" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:layout_marginVertical="@dimen/dp_15"
+                    android:background="@drawable/shape_edit_bg"
+                    android:hint="请输入密码"
+                    android:paddingStart="@dimen/dp_10"
+                    android:text="@={loginVm.passwordInput}" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/inputPasswordTwice"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:background="@drawable/shape_edit_bg"
+                    android:hint="请再次输入密码"
+                    android:paddingStart="@dimen/dp_10"
+                    android:text="@={loginVm.passwordTwiceInput}"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginVertical="@dimen/dp_15"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/loginOrRegisterBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_40"
+                        android:layout_marginHorizontal="@dimen/dp_15"
+                        android:layout_weight="1"
+                        android:background="@color/teal_700"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_14"
+                        tools:text="确定登录" />
+
+                    <TextView
+                        android:id="@+id/registerButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dp_15"
+                        android:gravity="center"
+                        android:text="注册"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="tabVm"
+            type="com.zoe.wan.android.example.activity.tab.TabViewModel" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/tabViewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.zoe.wan.base.tab.NavigationBottomBar
+            android:id="@+id/tabBottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>
+
