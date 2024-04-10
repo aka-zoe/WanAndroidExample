@@ -1,23 +1,39 @@
 package com.zoe.wan.android.example.repository
 
+import android.content.Context
+import android.content.Intent
+import com.blankj.utilcode.util.ToastUtils
+import com.zoe.wan.android.example.activity.login.LoginActivity
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
 import com.zoe.wan.android.http.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 
 object Repository {
 
+    private const val SUCCESS_CODE = 0
+    private const val NEED_LOGIN_CODE = -1001
+
+    private var mContext: WeakReference<Context>? = null
+
+    /**
+     * 初始化
+     */
+    fun init(context: Context) {
+        mContext = WeakReference(context)
+    }
 
     /**
      * 获取首页数据
      */
     suspend fun getHomeList(pageCount: String): HomeListData? {
         val data: BaseResponse<HomeListData?>? = getDefault().homeList(pageCount)
-        if (data?.getData() != null) {
-            return data.getData()
-        }
-        return null
+        return responseCall(data)
     }
 
     /**
@@ -25,10 +41,7 @@ object Repository {
      */
     suspend fun homeBanner(): HomeBannerData? {
         val data: BaseResponse<HomeBannerData?>? = getDefault().homeBanner()
-        if (data?.getData() != null) {
-            return data.getData()
-        }
-        return null
+        return responseCall(data)
     }
 
     /**
@@ -36,10 +49,7 @@ object Repository {
      */
     suspend fun login(username: String, password: String): UserData? {
         val data = getDefault().login(username, password)
-        if (data?.getData() != null) {
-            return data.getData()
-        }
-        return null
+        return responseCall(data)
     }
 
     /**
@@ -47,10 +57,87 @@ object Repository {
      */
     suspend fun register(username: String, password: String, repassword: String): UserData? {
         val data = getDefault().register(username, password, repassword)
-        if (data?.getData() != null) {
-            return data.getData()
+        return responseCall(data)
+    }
+
+
+    /**
+     * 登出
+     */
+    suspend fun logout(): Boolean {
+        val data = getDefault().logout()
+        return responseNoDataCall(data)
+    }
+
+    /**
+     * 点击收藏文章列表
+     */
+    suspend fun collect(id: String):Boolean {
+        val data = getDefault().collect(id)
+        return responseNoDataCall(data)
+    }
+
+    /**
+     * 点击取消收藏文章列表
+     */
+    suspend fun cancelCollect(id: String):Boolean {
+        val data = getDefault().cancelCollect(id)
+        return responseNoDataCall(data)
+    }
+
+    private fun responseNoDataCall(response: BaseResponse<Any?>?): Boolean {
+        if (response == null) {
+            showToast("请求异常！")
+            return false
         }
-        return null
+        //请求正常，返回数据
+        if (response.getErrCode() == SUCCESS_CODE) {
+            return true
+        } else if (response.getErrCode() == NEED_LOGIN_CODE) {
+            //需要登录，跳转到登录页
+            startToLogin()
+            return false
+        } else {
+            showToast(response.getErrMsg())
+            return false
+        }
+    }
+
+    /**
+     * 1、code=0，返回业务数据
+     * 2、code=-1001 跳转到登录页
+     */
+    private fun <T> responseCall(response: BaseResponse<T?>?): T? {
+        if (response == null) {
+            showToast("请求异常！")
+            return null
+        }
+
+        //请求正常，返回数据
+        if (response.getErrCode() == SUCCESS_CODE) {
+            return response.getData()
+        } else if (response.getErrCode() == NEED_LOGIN_CODE) {
+            //需要登录，跳转到登录页
+            startToLogin()
+            return null
+        } else {
+            showToast(response.getErrMsg())
+            return null
+        }
+    }
+
+    private fun startToLogin() {
+        mContext?.get()?.let {
+            val intent = Intent(it, LoginActivity::class.java)
+            intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
+            it.startActivity(intent)
+        }
+    }
+
+    private fun showToast(msg: String?) {
+        GlobalScope.launch(Dispatchers.Main) {
+            ToastUtils.showShort(msg ?: "请求异常！")
+        }
     }
 
     private fun getDefault(): ApiService {

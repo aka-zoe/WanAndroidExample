@@ -1,28 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="personalVm"
             type="com.zoe.wan.android.example.fragment.personal.FragPersonalViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/personalTv"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_200"
+            android:background="@color/teal_700"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/personalHead"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:background="@mipmap/ic_launcher_round" />
+
+            <TextView
+                android:id="@+id/personalUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@{personalVm.username}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14"
+                tools:text="yonghumingc" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/personalCollect"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginHorizontal="@dimen/dp_15"
+            android:layout_marginVertical="@dimen/dp_6"
+            android:background="@drawable/shape_settings_bg"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|start"
+                android:paddingStart="@dimen/dp_10"
+                android:text="我的收藏"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/img_arrow_right" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/personalCheckUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginHorizontal="@dimen/dp_15"
+            android:layout_marginVertical="@dimen/dp_6"
+            android:background="@drawable/shape_settings_bg"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|start"
+                android:paddingStart="@dimen/dp_10"
+                android:text="检查更新"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/img_arrow_right" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/personalAboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginHorizontal="@dimen/dp_15"
+            android:layout_marginVertical="@dimen/dp_6"
+            android:background="@drawable/shape_settings_bg"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|start"
+                android:paddingStart="@dimen/dp_10"
+                android:text="关于我们"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/img_arrow_right" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/personalLogout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Personal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginHorizontal="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_80"
+            android:background="@color/teal_700"
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            android:visibility="@{personalVm.showLogoutBtn==true ? View.VISIBLE:View.GONE}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </layout>

@@ -23,7 +23,11 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     private var dataList: List<HomeListItemData> = mutableListOf()
     private var bannerData: HomeBannerData? = null
+    private var collectListener: ItemCollectListener? = null
 
+    interface ItemCollectListener {
+        fun itemCollect(id: String, position: Int, collect: Boolean)
+    }
 
     companion object {
         //banner类型
@@ -51,6 +55,17 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
             bannerData = data
             notifyDataSetChanged()
         }
+    }
+
+    fun setCollect(collect: Boolean, position: Int) {
+        if (dataList.isNotEmpty()) {
+            dataList[position].collect = collect
+            notifyDataSetChanged()
+        }
+    }
+
+    fun registerItemListener(listener: ItemCollectListener?) {
+        this.collectListener = listener
     }
 
     class HomeListViewHolder(binding: ItemHomeListBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -124,7 +139,7 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
 
                     }
 
-                }).setOnBannerListener(object: OnBannerListener<HomeBannerDataItem?> {
+                }).setOnBannerListener(object : OnBannerListener<HomeBannerDataItem?> {
                     override fun OnBannerClick(data: HomeBannerDataItem?, position: Int) {
 //                        Toast.makeText(holder.bannerBinding.itemHomeBannerTitle.context,
 //                            "Banner点击",Toast.LENGTH_SHORT).show()
@@ -141,6 +156,12 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
                 holder.itemBinding.itemHomeCollect.setBackgroundResource(R.drawable.img_collect)
             } else {
                 holder.itemBinding.itemHomeCollect.setBackgroundResource(R.drawable.img_collect_grey)
+            }
+
+            holder.itemBinding.itemHomeCollect.setOnClickListener {
+                if (collectListener != null) {
+                    collectListener?.itemCollect("${item.id}", position, item.collect ?: false)
+                }
             }
         }
 

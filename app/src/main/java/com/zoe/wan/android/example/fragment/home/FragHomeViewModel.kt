@@ -37,4 +37,29 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
+    /**
+     * 点击收藏文章列表
+     */
+    fun collect(id: String, callback: () -> Unit) {
+        viewModelScope.launch {
+            val success = Repository.collect(id)
+            if (success) {
+                callback.invoke()
+            }
+        }
+    }
+
+
+    /**
+     * 点击取消收藏文章列表
+     */
+    fun cancelCollect(id: String, callback: () -> Unit) {
+        viewModelScope.launch {
+            val success = Repository.cancelCollect(id)
+            if (success) {
+                callback.invoke()
+            }
+        }
+    }
+
 }

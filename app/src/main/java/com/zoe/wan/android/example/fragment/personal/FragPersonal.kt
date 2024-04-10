@@ -1,10 +1,8 @@
 package com.zoe.wan.android.example.fragment.personal
 
 import android.content.Intent
-import com.blankj.utilcode.util.SPUtils
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.BR
-import com.zoe.wan.android.example.Constants
 import com.zoe.wan.android.example.activity.login.LoginActivity
 import com.zoe.wan.android.example.databinding.FragmentPersonalBinding
 import com.zoe.wan.base.BaseFragment
@@ -19,22 +17,26 @@ class FragPersonal : BaseFragment<FragmentPersonalBinding, FragPersonalViewModel
     }
 
     override fun initViewData() {
+        binding?.personalHead?.setOnClickListener { shouldLogin() }
+        binding?.personalUsername?.setOnClickListener { shouldLogin() }
 
-        val username = SPUtils.getInstance().getString(Constants.SP_USER_NAME)
-        if(username.isNullOrEmpty()){
-            binding?.personalTv?.text = "去登录"
-        }else{
-            binding?.personalTv?.text = "已登录"
+        //登出
+        binding?.personalLogout?.setOnClickListener {
+            viewModel?.logout()
         }
+    }
 
-        binding?.personalTv?.setOnClickListener {
+    /**
+     * 非登录状态跳转到登录页
+     */
+    private fun shouldLogin() {
 
-            val intent = Intent(context, LoginActivity::class.java)
-            if(username.isNullOrEmpty()){
-                intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
-            }
-            startActivity(intent)
+        if (viewModel?.showLogoutBtn?.get() == true) {
+            return
         }
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
+        startActivity(intent)
     }
 
 }
