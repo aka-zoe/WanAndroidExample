@@ -2,14 +2,18 @@ package com.zoe.wan.android.example.repository
 
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
+import com.zoe.wan.android.example.repository.data.HomeTopListData
+import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.ApiAddress.Article_List
 import com.zoe.wan.android.http.ApiAddress.Collect
 import com.zoe.wan.android.http.ApiAddress.Collect_Cancel
 import com.zoe.wan.android.http.ApiAddress.Home_Banner
+import com.zoe.wan.android.http.ApiAddress.Knowledge_List
 import com.zoe.wan.android.http.ApiAddress.Login
 import com.zoe.wan.android.http.ApiAddress.Logout
 import com.zoe.wan.android.http.ApiAddress.Register
+import com.zoe.wan.android.http.ApiAddress.Top_Article_List
 import com.zoe.wan.android.http.BaseResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -24,6 +28,12 @@ interface ApiService {
      */
     @GET("$Article_List{pageCount}/json")
     suspend fun homeList(@Path("pageCount") pageCount: String): BaseResponse<HomeListData?>?
+
+    /**
+     * 获取首页置顶列表数据
+     */
+    @GET(Top_Article_List)
+    suspend fun topHomeList(): BaseResponse<HomeTopListData?>?
 
 
     /**
@@ -62,11 +72,18 @@ interface ApiService {
      * 点击收藏文章列表
      */
     @POST("$Collect{id}/json")
-    suspend fun collect(@Path("id") id:String): BaseResponse<Any?>?
+    suspend fun collect(@Path("id") id: String): BaseResponse<Any?>?
 
     /**
      * 点击取消收藏文章列表
      */
     @POST("$Collect_Cancel{id}/json")
-    suspend fun cancelCollect(@Path("id") id:String): BaseResponse<Any?>?
+    suspend fun cancelCollect(@Path("id") id: String): BaseResponse<Any?>?
+
+    /**
+     * 知识体系数据
+     */
+    @GET(Knowledge_List)
+    suspend fun knowledgeList(): BaseResponse<KnowledgeListData?>?
+
 }

@@ -11,19 +11,35 @@ import kotlinx.coroutines.launch
 
 class FragHomeViewModel(application: Application) : BaseViewModel(application) {
 
-    val list = SingleLiveEvent<List<HomeListItemData>?>()
+    val list = SingleLiveEvent<List<HomeListItemData?>?>()
     val bannerData = SingleLiveEvent<HomeBannerData?>()
 
     init {
-        getHomeList()
+        getTopHomeList { topList ->
+            getHomeList(topList)
+        }
+
         getHomeBanner()
     }
 
-    private fun getHomeList() {
+    private fun getHomeList(topList: List<HomeListItemData?>?) {
         viewModelScope.launch {
             val data = Repository.getHomeList("0")
             if (data != null) {
-                list.postValue(data.datas)
+                list.postValue((topList ?: emptyList()) + (data.datas ?: emptyList()))
+            } else {
+                list.postValue(topList)
+            }
+        }
+    }
+
+    private fun getTopHomeList(callback: (topList: List<HomeListItemData?>?) -> Unit) {
+        viewModelScope.launch {
+            val data = Repository.getHomeTopList()
+            if (data != null) {
+                callback.invoke(data)
+            }else{
+                callback.invoke(emptyList())
             }
         }
     }

@@ -21,12 +21,16 @@ import com.zoe.wan.android.example.repository.data.HomeListItemData
 
 class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
 
-    private var dataList: List<HomeListItemData> = mutableListOf()
+    private var dataList: List<HomeListItemData?>? = mutableListOf()
     private var bannerData: HomeBannerData? = null
-    private var collectListener: ItemCollectListener? = null
+    private var itemCLickListener: HomeItemClickListener? = null
 
-    interface ItemCollectListener {
+    interface HomeItemClickListener {
         fun itemCollect(id: String, position: Int, collect: Boolean)
+
+        fun itemClick(title: String?, link: String?)
+
+        fun bannerClick(title: String?, link: String?)
     }
 
     companion object {
@@ -40,7 +44,7 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
     /**
      * 设置列表数据
      */
-    fun setData(list: List<HomeListItemData>?) {
+    fun setData(list: List<HomeListItemData?>?) {
         if (list != null && list.isNotEmpty()) {
             dataList = list
             notifyDataSetChanged()
@@ -58,14 +62,14 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     fun setCollect(collect: Boolean, position: Int) {
-        if (dataList.isNotEmpty()) {
-            dataList[position].collect = collect
+        if (dataList?.isNotEmpty() == true) {
+            dataList?.get(position)?.collect = collect
             notifyDataSetChanged()
         }
     }
 
-    fun registerItemListener(listener: ItemCollectListener?) {
-        this.collectListener = listener
+    fun registerItemListener(listener: HomeItemClickListener?) {
+        this.itemCLickListener = listener
     }
 
     class HomeListViewHolder(binding: ItemHomeListBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -113,7 +117,7 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return dataList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -143,25 +147,30 @@ class HomeListAdapter : RecyclerView.Adapter<ViewHolder>() {
                     override fun OnBannerClick(data: HomeBannerDataItem?, position: Int) {
 //                        Toast.makeText(holder.bannerBinding.itemHomeBannerTitle.context,
 //                            "Banner点击",Toast.LENGTH_SHORT).show()
-
+                        //banner点击事件
+                        itemCLickListener?.bannerClick(data?.title, data?.url)
                         ToastUtils.showShort("Banner点击")
                     }
 
                 })
 
         } else if (holder is HomeListViewHolder) {
-            val item = dataList[position]
+            val item = dataList?.get(position)
             holder.itemBinding.item = item
-            if (item.collect == true) {
+            if (item?.collect == true) {
                 holder.itemBinding.itemHomeCollect.setBackgroundResource(R.drawable.img_collect)
             } else {
                 holder.itemBinding.itemHomeCollect.setBackgroundResource(R.drawable.img_collect_grey)
             }
 
+            //收藏按钮事件
             holder.itemBinding.itemHomeCollect.setOnClickListener {
-                if (collectListener != null) {
-                    collectListener?.itemCollect("${item.id}", position, item.collect ?: false)
-                }
+                itemCLickListener?.itemCollect("${item?.id}", position, item?.collect ?: false)
+            }
+
+            //item点击事件
+            holder.itemBinding.root.setOnClickListener {
+                itemCLickListener?.itemClick(item?.title, item?.link)
             }
         }
 

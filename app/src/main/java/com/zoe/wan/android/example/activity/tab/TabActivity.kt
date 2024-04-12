@@ -14,7 +14,6 @@ import com.zoe.wan.android.example.fragment.home.FragHome
 import com.zoe.wan.android.example.fragment.hot_key.FragHotKey
 import com.zoe.wan.android.example.fragment.knowledge.FragKnowledge
 import com.zoe.wan.android.example.fragment.personal.FragPersonal
-import com.zoe.wan.android.example.repository.Repository
 import com.zoe.wan.base.adapter.Pager2Adapter
 import com.zoe.wan.base.tab.NavigationBottomBar
 
@@ -28,7 +27,6 @@ class TabActivity : BaseActivity<ActivityTabBinding, TabViewModel>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Repository.init(this)
         super.onCreate(savedInstanceState)
     }
     override fun initViewData() {

@@ -6,6 +6,8 @@ import com.blankj.utilcode.util.ToastUtils
 import com.zoe.wan.android.example.activity.login.LoginActivity
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
+import com.zoe.wan.android.example.repository.data.HomeTopListData
+import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
 import com.zoe.wan.android.http.RetrofitClient
@@ -33,6 +35,14 @@ object Repository {
      */
     suspend fun getHomeList(pageCount: String): HomeListData? {
         val data: BaseResponse<HomeListData?>? = getDefault().homeList(pageCount)
+        return responseCall(data)
+    }
+
+    /**
+     * 获取首页置顶数据
+     */
+    suspend fun getHomeTopList(): HomeTopListData? {
+        val data: BaseResponse<HomeTopListData?>? = getDefault().topHomeList()
         return responseCall(data)
     }
 
@@ -72,7 +82,7 @@ object Repository {
     /**
      * 点击收藏文章列表
      */
-    suspend fun collect(id: String):Boolean {
+    suspend fun collect(id: String): Boolean {
         val data = getDefault().collect(id)
         return responseNoDataCall(data)
     }
@@ -80,9 +90,18 @@ object Repository {
     /**
      * 点击取消收藏文章列表
      */
-    suspend fun cancelCollect(id: String):Boolean {
+    suspend fun cancelCollect(id: String): Boolean {
         val data = getDefault().cancelCollect(id)
         return responseNoDataCall(data)
+    }
+
+
+    /**
+     * 知识体系数据
+     */
+    suspend fun knowledgeList(): KnowledgeListData? {
+        val data = getDefault().knowledgeList()
+        return responseCall(data)
     }
 
     private fun responseNoDataCall(response: BaseResponse<Any?>?): Boolean {
@@ -130,6 +149,7 @@ object Repository {
         mContext?.get()?.let {
             val intent = Intent(it, LoginActivity::class.java)
             intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             it.startActivity(intent)
         }
     }
