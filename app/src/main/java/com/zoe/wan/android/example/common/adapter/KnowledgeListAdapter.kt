@@ -27,7 +27,7 @@ class KnowledgeListAdapter : RecyclerView.Adapter<KnowledgeListAdapter.Knowledge
 
     interface KnowledgeItemClickListener {
 
-        fun itemClick(position: Int)
+        fun itemClick(item: KnowledgeListDataItem?)
 
     }
 
@@ -66,7 +66,7 @@ class KnowledgeListAdapter : RecyclerView.Adapter<KnowledgeListAdapter.Knowledge
         holder.binding.knowledgeItemSubTitle.text = sb.toString()
 
         holder.binding.root.setOnClickListener {
-            itemClickListener?.itemClick(position)
+            itemClickListener?.itemClick(item)
         }
     }
 

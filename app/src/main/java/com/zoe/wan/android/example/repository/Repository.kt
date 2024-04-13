@@ -7,6 +7,7 @@ import com.zoe.wan.android.example.activity.login.LoginActivity
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
+import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
@@ -101,6 +102,17 @@ object Repository {
      */
     suspend fun knowledgeList(): KnowledgeListData? {
         val data = getDefault().knowledgeList()
+        return responseCall(data)
+    }
+
+    /**
+     * 知识体系下的文章列表
+     */
+    suspend fun knowledgeArticleList(
+        pageCount: String = "0",
+        cid: String
+    ): KnowledgeDetailArticleListData? {
+        val data = getDefault().knowledgeArticleList(pageCount, cid)
         return responseCall(data)
     }
 

@@ -58,7 +58,13 @@ dependencies {
     //glide
     implementation libs.glide
     implementation libs.androidx.cardview
+    //下拉刷新
+//    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+//    implementation 'androidx.appcompat:appcompat:1.0.0'                 //必须 1.0.0 以上
+    //下拉刷新上拉加载更多
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
 
     //junit单元测试
     testImplementation libs.junit

@@ -3,6 +3,7 @@ package com.zoe.wan.android.example.repository
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
+import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.ApiAddress.Article_List
@@ -10,6 +11,7 @@ import com.zoe.wan.android.http.ApiAddress.Collect
 import com.zoe.wan.android.http.ApiAddress.Collect_Cancel
 import com.zoe.wan.android.http.ApiAddress.Home_Banner
 import com.zoe.wan.android.http.ApiAddress.Knowledge_List
+import com.zoe.wan.android.http.ApiAddress.Knowledge_List_detail
 import com.zoe.wan.android.http.ApiAddress.Login
 import com.zoe.wan.android.http.ApiAddress.Logout
 import com.zoe.wan.android.http.ApiAddress.Register
@@ -20,6 +22,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -85,5 +88,14 @@ interface ApiService {
      */
     @GET(Knowledge_List)
     suspend fun knowledgeList(): BaseResponse<KnowledgeListData?>?
+
+    /**
+     * 知识体系下的文章列表
+     */
+    @GET("$Knowledge_List_detail{pageCount}/json")
+    suspend fun knowledgeArticleList(
+        @Path("pageCount") pageCount: String = "0",
+        @Query("cid") cid: String
+    ):BaseResponse<KnowledgeDetailArticleListData?>?
 
 }

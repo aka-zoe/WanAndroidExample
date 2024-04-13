@@ -13,16 +13,17 @@ class FragKnowledgeViewModel(application: Application) : BaseViewModel(applicati
     val knowledgeList = SingleLiveEvent<List<KnowledgeListDataItem?>?>()
 
     init {
-        knowledgeList()
+        knowledgeList{}
     }
 
 
-    private fun knowledgeList() {
+    fun knowledgeList(callback: () -> Unit) {
         viewModelScope.launch {
             val data = Repository.knowledgeList()
             if (data?.isNotEmpty() == true) {
                 knowledgeList.postValue(data)
             }
+            callback.invoke()
         }
 
     }

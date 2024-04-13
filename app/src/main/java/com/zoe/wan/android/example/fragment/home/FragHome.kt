@@ -20,12 +20,35 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
     }
 
     override fun initViewData() {
+        initListView()
 
-        binding?.homeListView?.layoutManager = LinearLayoutManager(context)
-        binding?.homeListView?.adapter = adapter
 
+        observerData()
+
+        refreshOrLoadMore()
+    }
+
+    private fun refreshOrLoadMore() {
+        //下拉刷新
+        binding?.homeRefreshView?.setOnRefreshListener {
+            viewModel?.initData(false){
+                it.finishRefresh()
+            }
+
+        }
+
+        //上拉加载
+        binding?.homeRefreshView?.setOnLoadMoreListener {
+            viewModel?.initData(true){
+                it.finishLoadMore()
+            }
+        }
+    }
+
+    private fun observerData() {
         viewModel?.list?.observe(viewLifecycleOwner) { list ->
             adapter.setData(list)
+
         }
 
         viewModel?.bannerData?.observe(viewLifecycleOwner) { data ->
@@ -34,6 +57,12 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
 
         }
 
+    }
+
+    private fun initListView() {
+
+        binding?.homeListView?.layoutManager = LinearLayoutManager(context)
+        binding?.homeListView?.adapter = adapter
         //item点击回调
         adapter.registerItemListener(object : HomeListAdapter.HomeItemClickListener {
             override fun itemCollect(id: String, position: Int, collect: Boolean) {

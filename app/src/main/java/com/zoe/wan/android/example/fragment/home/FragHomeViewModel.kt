@@ -13,35 +13,68 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
 
     val list = SingleLiveEvent<List<HomeListItemData?>?>()
     val bannerData = SingleLiveEvent<HomeBannerData?>()
+    var pageCount = 0
 
     init {
-        getTopHomeList { topList ->
-            getHomeList(topList)
-        }
-
-        getHomeBanner()
+        initData(false){}
     }
 
-    private fun getHomeList(topList: List<HomeListItemData?>?) {
+    fun initData(loadMore: Boolean,callback: () -> Unit) {
+        if (!loadMore) {
+            pageCount = 0
+            getHomeBanner()
+        } else {
+            pageCount++
+        }
+
+        getTopHomeList(loadMore) { topList ->
+            getHomeList(loadMore,topList){
+                callback.invoke()
+            }
+        }
+
+
+    }
+
+    private fun getHomeList(loadMore: Boolean, topList: List<HomeListItemData?>?,callback:()->Unit) {
         viewModelScope.launch {
-            val data = Repository.getHomeList("0")
+            val data = Repository.getHomeList("$pageCount")
+
             if (data != null) {
-                list.postValue((topList ?: emptyList()) + (data.datas ?: emptyList()))
+                if (loadMore) {
+                    val newList = (list.value ?: emptyList()) + (data?.datas ?: emptyList())
+                    list.postValue(newList)
+                } else {
+                    list.postValue((topList ?: emptyList()) + (data.datas ?: emptyList()))
+                }
+
             } else {
+                if (loadMore && pageCount > 0) {
+                    pageCount--
+                }
                 list.postValue(topList)
             }
+            callback.invoke()
         }
     }
 
-    private fun getTopHomeList(callback: (topList: List<HomeListItemData?>?) -> Unit) {
-        viewModelScope.launch {
-            val data = Repository.getHomeTopList()
-            if (data != null) {
-                callback.invoke(data)
-            }else{
-                callback.invoke(emptyList())
+    private fun getTopHomeList(
+        loadMore: Boolean,
+        callback: (topList: List<HomeListItemData?>?) -> Unit
+    ) {
+        if (loadMore) {
+            callback.invoke(emptyList())
+        } else {
+            viewModelScope.launch {
+                val data = Repository.getHomeTopList()
+                if (data != null) {
+                    callback.invoke(data)
+                } else {
+                    callback.invoke(emptyList())
+                }
             }
         }
+
     }
 
     private fun getHomeBanner() {
