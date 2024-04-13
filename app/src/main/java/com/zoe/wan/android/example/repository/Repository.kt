@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import com.blankj.utilcode.util.ToastUtils
 import com.zoe.wan.android.example.activity.login.LoginActivity
+import com.zoe.wan.android.example.repository.data.CommonWebsiteListData
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
+import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
 import com.zoe.wan.android.http.RetrofitClient
@@ -113,6 +115,22 @@ object Repository {
         cid: String
     ): KnowledgeDetailArticleListData? {
         val data = getDefault().knowledgeArticleList(pageCount, cid)
+        return responseCall(data)
+    }
+
+    /**
+     * 搜索热词
+     */
+    suspend fun searchHotKeyList(): SearchHotKeyListData? {
+        val data = getDefault().searchHotKeyList()
+        return responseCall(data)
+    }
+
+    /**
+     * 常用网站
+     */
+    suspend fun commonWebsiteList(): CommonWebsiteListData? {
+        val data = getDefault().commonWebsiteList()
         return responseCall(data)
     }
 

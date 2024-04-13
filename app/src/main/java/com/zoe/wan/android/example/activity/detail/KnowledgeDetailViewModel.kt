@@ -5,4 +5,5 @@ import com.zoe.wan.base.BaseViewModel
 
 class KnowledgeDetailViewModel(application: Application):BaseViewModel(application) {
 
+
 }

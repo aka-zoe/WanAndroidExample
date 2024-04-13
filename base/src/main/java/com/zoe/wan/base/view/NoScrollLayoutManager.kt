@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 /**
  * 禁止RecyclerView滑动的布局管理器
  */
-class NoScrollLayoutManager(context: Context, spanCount: Int) : GridLayoutManager(
+class NoScrollLayoutManager(context: Context?, spanCount: Int) : GridLayoutManager(
     context,
     spanCount
 ) {

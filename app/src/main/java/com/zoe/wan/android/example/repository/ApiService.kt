@@ -1,20 +1,24 @@
 package com.zoe.wan.android.example.repository
 
+import com.zoe.wan.android.example.repository.data.CommonWebsiteListData
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
+import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.ApiAddress.Article_List
 import com.zoe.wan.android.http.ApiAddress.Collect
 import com.zoe.wan.android.http.ApiAddress.Collect_Cancel
+import com.zoe.wan.android.http.ApiAddress.Common_Use_Website
 import com.zoe.wan.android.http.ApiAddress.Home_Banner
 import com.zoe.wan.android.http.ApiAddress.Knowledge_List
 import com.zoe.wan.android.http.ApiAddress.Knowledge_List_detail
 import com.zoe.wan.android.http.ApiAddress.Login
 import com.zoe.wan.android.http.ApiAddress.Logout
 import com.zoe.wan.android.http.ApiAddress.Register
+import com.zoe.wan.android.http.ApiAddress.Search_Hot_Key
 import com.zoe.wan.android.http.ApiAddress.Top_Article_List
 import com.zoe.wan.android.http.BaseResponse
 import retrofit2.http.Field
@@ -96,6 +100,17 @@ interface ApiService {
     suspend fun knowledgeArticleList(
         @Path("pageCount") pageCount: String = "0",
         @Query("cid") cid: String
-    ):BaseResponse<KnowledgeDetailArticleListData?>?
+    ): BaseResponse<KnowledgeDetailArticleListData?>?
 
+    /**
+     * 搜索热词
+     */
+    @GET(Search_Hot_Key)
+    suspend fun searchHotKeyList(): BaseResponse<SearchHotKeyListData?>?
+
+    /**
+     * 常用网站
+     */
+    @GET(Common_Use_Website)
+    suspend fun commonWebsiteList(): BaseResponse<CommonWebsiteListData?>?
 }

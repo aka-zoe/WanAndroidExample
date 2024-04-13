@@ -11,7 +11,7 @@ import com.zoe.wan.base.BaseActivity
 import com.zoe.wan.android.example.BR
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.fragment.home.FragHome
-import com.zoe.wan.android.example.fragment.hot_key.FragHotKey
+import com.zoe.wan.android.example.fragment.hot_key.FragSearchKey
 import com.zoe.wan.android.example.fragment.knowledge.FragKnowledge
 import com.zoe.wan.android.example.fragment.personal.FragPersonal
 import com.zoe.wan.base.adapter.Pager2Adapter
@@ -70,7 +70,7 @@ class TabActivity : BaseActivity<ActivityTabBinding, TabViewModel>() {
         val tabPages = mutableListOf<Fragment>()
 
         tabPages.add(FragHome())
-        tabPages.add(FragHotKey())
+        tabPages.add(FragSearchKey())
         tabPages.add(FragKnowledge())
         tabPages.add(FragPersonal())
 
