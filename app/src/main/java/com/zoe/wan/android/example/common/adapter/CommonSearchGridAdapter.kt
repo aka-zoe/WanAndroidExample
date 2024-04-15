@@ -1,68 +1,22 @@
 package com.zoe.wan.android.example.common.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.databinding.ItemCommonSearchKeyBinding
 import com.zoe.wan.android.example.repository.data.CommonSearchData
+import com.zoe.wan.base.adapter.BaseAdapter
+import com.zoe.wan.base.adapter.BaseViewHolder
 
-class CommonSearchGridAdapter : RecyclerView.Adapter<CommonSearchGridAdapter
-.CommonSearchViewHolder>() {
-
-    private var list: List<CommonSearchData?>? = null
-    private var listener: CommonSearchItemListener? = null
-
-    class CommonSearchViewHolder(binding: ItemCommonSearchKeyBinding) : RecyclerView.ViewHolder
-        (binding.root) {
-        var binding: ItemCommonSearchKeyBinding
-
-        init {
-            this.binding = binding
-        }
+class CommonSearchGridAdapter : BaseAdapter<CommonSearchData?, CommonSearchGridAdapter.CommonSearchViewHolder>() {
+    class CommonSearchViewHolder(binding: ItemCommonSearchKeyBinding) : BaseViewHolder<ItemCommonSearchKeyBinding>
+        (binding)
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): CommonSearchViewHolder {
+       return CommonSearchViewHolder(getBinding(parent,R.layout.item_common_search_key))
     }
 
-    interface CommonSearchItemListener {
-        fun itemClick(name: String?, link: String?)
-    }
-
-    fun setDataList(list: List<CommonSearchData?>?) {
-        list?.let {
-            this.list = it
-            notifyDataSetChanged()
-        }
-    }
-
-    fun registerItemListener(listener: CommonSearchItemListener?) {
-        this.listener = listener
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonSearchViewHolder {
-        return CommonSearchViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(
-                    parent
-                        .context
-                ), R.layout.item_common_search_key, parent, false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: CommonSearchViewHolder, position: Int) {
-        val item = list?.get(position)
+    override fun bindHolder(holder: CommonSearchViewHolder, position: Int) {
+        val item = getDataList()?.get(position)
         holder.binding.item = item
-        holder.binding.root.setOnClickListener {
-            this.listener?.let {
-                if (item?.link == null) {
-                    item?.link = ""
-                }
-                it.itemClick(item?.name, item?.link)
-            }
-        }
     }
 
-    override fun getItemCount(): Int {
-        return list?.size ?: 0
-    }
 }

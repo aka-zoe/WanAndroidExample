@@ -7,7 +7,9 @@ import com.zoe.wan.android.example.BR
 import com.zoe.wan.android.example.activity.webview.WebActivity
 import com.zoe.wan.android.example.common.adapter.HomeListAdapter
 import com.zoe.wan.android.example.databinding.FragmentHomeBinding
+import com.zoe.wan.android.example.repository.data.HomeListItemData
 import com.zoe.wan.base.BaseFragment
+import com.zoe.wan.base.adapter.BaseItemClickListener
 
 class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
     private val adapter = HomeListAdapter()
@@ -47,7 +49,7 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
 
     private fun observerData() {
         viewModel?.list?.observe(viewLifecycleOwner) { list ->
-            adapter.setData(list)
+            adapter.setDataList(list)
 
         }
 
@@ -64,7 +66,13 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
         binding?.homeListView?.layoutManager = LinearLayoutManager(context)
         binding?.homeListView?.adapter = adapter
         //item点击回调
-        adapter.registerItemListener(object : HomeListAdapter.HomeItemClickListener {
+        adapter.registerItemClickListener(object: BaseItemClickListener<HomeListItemData?>(){
+            override fun itemClick(item: HomeListItemData?, position: Int) {
+                jumpToWeb(item?.title, item?.link)
+            }
+
+        })
+        adapter.registerHomeItemListener(object : HomeListAdapter.HomeItemClickListener {
             override fun itemCollect(id: String, position: Int, collect: Boolean) {
                 if (collect) {
                     //取消收藏
@@ -82,15 +90,13 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
 
             }
 
-            override fun itemClick(title: String?, link: String?) {
-                jumpToWeb(title, link)
-            }
-
             override fun bannerClick(title: String?, link: String?) {
                 jumpToWeb(title, link)
             }
 
         })
+
+
     }
 
     private fun jumpToWeb(title: String?, link: String?) {

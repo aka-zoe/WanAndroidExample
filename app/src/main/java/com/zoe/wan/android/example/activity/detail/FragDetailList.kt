@@ -9,6 +9,7 @@ import com.zoe.wan.android.example.common.adapter.KnowledgeDetailListAdapter
 import com.zoe.wan.android.example.databinding.FragmentDetailListBinding
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleData
 import com.zoe.wan.base.BaseFragment
+import com.zoe.wan.base.adapter.BaseItemClickListener
 
 /**
  * 展示知识体系下文章列表的
@@ -51,9 +52,9 @@ class FragDetailList(private val id: String) : BaseFragment<FragmentDetailListBi
             adapter.setDataList(it)
         }
 
-        adapter.registerItemListener(object :
-            KnowledgeDetailListAdapter.KnowledgeItemClickListener {
-            override fun itemClick(item: KnowledgeDetailArticleData?) {
+        adapter.registerItemClickListener(object :
+            BaseItemClickListener<KnowledgeDetailArticleData?>() {
+            override fun itemClick(item: KnowledgeDetailArticleData?, position: Int) {
                 jumpToWeb(item?.title, item?.link)
             }
         })

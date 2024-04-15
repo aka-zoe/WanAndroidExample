@@ -12,6 +12,7 @@ import com.zoe.wan.android.example.repository.data.DetailIntentData
 import com.zoe.wan.android.example.repository.data.DetailIntentItemData
 import com.zoe.wan.android.example.repository.data.KnowledgeListDataItem
 import com.zoe.wan.base.BaseFragment
+import com.zoe.wan.base.adapter.BaseItemClickListener
 
 class FragKnowledge : BaseFragment<FragmentKnowledgeBinding, FragKnowledgeViewModel>() {
     private val adapter = KnowledgeListAdapter()
@@ -37,8 +38,9 @@ class FragKnowledge : BaseFragment<FragmentKnowledgeBinding, FragKnowledgeViewMo
             adapter.setDataList(it)
         }
 
-        adapter.registerItemListener(object : KnowledgeListAdapter.KnowledgeItemClickListener {
-            override fun itemClick(item: KnowledgeListDataItem?) {
+        adapter.registerItemClickListener(object : BaseItemClickListener<KnowledgeListDataItem?>() {
+
+            override fun itemClick(item: KnowledgeListDataItem?, position: Int) {
                 val tabList = mutableListOf<DetailIntentItemData?>()
 
                 item?.children?.forEach {

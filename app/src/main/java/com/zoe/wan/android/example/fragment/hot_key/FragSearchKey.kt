@@ -6,7 +6,9 @@ import com.zoe.wan.android.example.BR
 import com.zoe.wan.android.example.activity.webview.WebActivity
 import com.zoe.wan.android.example.common.adapter.CommonSearchGridAdapter
 import com.zoe.wan.android.example.databinding.FragmentSearchKeyBinding
+import com.zoe.wan.android.example.repository.data.CommonSearchData
 import com.zoe.wan.base.BaseFragment
+import com.zoe.wan.base.adapter.BaseItemClickListener
 import com.zoe.wan.base.view.NoScrollLayoutManager
 
 class FragSearchKey : BaseFragment<FragmentSearchKeyBinding, FragSearchKeyViewModel>() {
@@ -38,9 +40,9 @@ class FragSearchKey : BaseFragment<FragmentSearchKeyBinding, FragSearchKeyViewMo
         //搜索热点
         binding?.searchHotKeyListView?.layoutManager = NoScrollLayoutManager(context, 3)
         binding?.searchHotKeyListView?.adapter = searchListAdapter
-        searchListAdapter.registerItemListener(object : CommonSearchGridAdapter
-        .CommonSearchItemListener {
-            override fun itemClick(name: String?, link: String?) {
+        searchListAdapter.registerItemClickListener(object :
+            BaseItemClickListener<CommonSearchData?>() {
+            override fun itemClick(item: CommonSearchData?, position: Int) {
 
             }
 
@@ -48,12 +50,11 @@ class FragSearchKey : BaseFragment<FragmentSearchKeyBinding, FragSearchKeyViewMo
         //常用网站
         binding?.commonWebsiteListView?.layoutManager = NoScrollLayoutManager(context, 3)
         binding?.commonWebsiteListView?.adapter = commonListAdapter
-        commonListAdapter.registerItemListener(object : CommonSearchGridAdapter
-        .CommonSearchItemListener {
-            override fun itemClick(name: String?, link: String?) {
-                jumpToWeb(name, link)
+        commonListAdapter.registerItemClickListener(object :
+            BaseItemClickListener<CommonSearchData?>() {
+            override fun itemClick(item: CommonSearchData?, position: Int) {
+                jumpToWeb(item?.name, item?.link)
             }
-
         })
 
     }

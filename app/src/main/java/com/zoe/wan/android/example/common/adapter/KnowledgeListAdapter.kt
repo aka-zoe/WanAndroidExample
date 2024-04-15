@@ -1,60 +1,28 @@
 package com.zoe.wan.android.example.common.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.databinding.ItemKnowledgeListBinding
 import com.zoe.wan.android.example.repository.data.KnowledgeListDataItem
+import com.zoe.wan.base.adapter.BaseAdapter
+import com.zoe.wan.base.adapter.BaseViewHolder
 import java.lang.StringBuilder
 
 /**
  * 知识体系列表适配器
  */
-class KnowledgeListAdapter : RecyclerView.Adapter<KnowledgeListAdapter.KnowledgeItemViewHolder>() {
-    private var list: List<KnowledgeListDataItem?>? = null
-    private var itemClickListener: KnowledgeItemClickListener? = null
+class KnowledgeListAdapter : BaseAdapter<KnowledgeListDataItem?, KnowledgeListAdapter
+.KnowledgeItemViewHolder>() {
 
-    class KnowledgeItemViewHolder(itemBinding: ItemKnowledgeListBinding) : RecyclerView.ViewHolder
-        (itemBinding.root) {
-        var binding: ItemKnowledgeListBinding
+    class KnowledgeItemViewHolder(itemBinding: ItemKnowledgeListBinding) :
+        BaseViewHolder<ItemKnowledgeListBinding>(itemBinding)
 
-        init {
-            binding = itemBinding
-        }
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): KnowledgeItemViewHolder {
+        return KnowledgeItemViewHolder(getBinding(parent, R.layout.item_knowledge_list))
     }
 
-    interface KnowledgeItemClickListener {
-
-        fun itemClick(item: KnowledgeListDataItem?)
-
-    }
-
-    fun registerItemListener(listener: KnowledgeItemClickListener?) {
-        this.itemClickListener = listener
-    }
-
-    fun setDataList(dataList: List<KnowledgeListDataItem?>?) {
-        if (dataList?.isNotEmpty() == true) {
-            list = dataList
-            notifyDataSetChanged()
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KnowledgeItemViewHolder {
-        return KnowledgeItemViewHolder(
-            DataBindingUtil.inflate(
-                LayoutInflater.from(
-                    parent
-                        .context
-                ), R.layout.item_knowledge_list, parent, false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: KnowledgeItemViewHolder, position: Int) {
-        val item = list?.get(position)
+    override fun bindHolder(holder: KnowledgeItemViewHolder, position: Int) {
+        val item = getDataList()?.get(position)
         holder.binding.item = item
 
         val sb = StringBuilder()
@@ -64,13 +32,5 @@ class KnowledgeListAdapter : RecyclerView.Adapter<KnowledgeListAdapter.Knowledge
         }
 
         holder.binding.knowledgeItemSubTitle.text = sb.toString()
-
-        holder.binding.root.setOnClickListener {
-            itemClickListener?.itemClick(item)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return list?.size ?: 0
     }
 }
