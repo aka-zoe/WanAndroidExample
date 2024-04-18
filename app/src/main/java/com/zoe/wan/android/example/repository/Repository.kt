@@ -11,6 +11,7 @@ import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
+import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
 import com.zoe.wan.android.http.RetrofitClient
@@ -133,6 +134,16 @@ object Repository {
         val data = getDefault().commonWebsiteList()
         return responseCall(data)
     }
+
+
+    /**
+     * 搜索
+     */
+    suspend fun search(k: String?, pageCount: String = "0"): SearchResultListData? {
+        val data = getDefault().search(k = k ?: "", pageCount = pageCount)
+        return responseCall(data)
+    }
+
 
     private fun responseNoDataCall(response: BaseResponse<Any?>?): Boolean {
         if (response == null) {

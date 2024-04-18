@@ -3,6 +3,7 @@ package com.zoe.wan.android.example.fragment.hot_key
 import android.content.Intent
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.BR
+import com.zoe.wan.android.example.activity.search.SearchActivity
 import com.zoe.wan.android.example.activity.webview.WebActivity
 import com.zoe.wan.android.example.common.adapter.CommonSearchGridAdapter
 import com.zoe.wan.android.example.databinding.FragmentSearchKeyBinding
@@ -43,7 +44,9 @@ class FragSearchKey : BaseFragment<FragmentSearchKeyBinding, FragSearchKeyViewMo
         searchListAdapter.registerItemClickListener(object :
             BaseItemClickListener<CommonSearchData?>() {
             override fun itemClick(item: CommonSearchData?, position: Int) {
-
+                val intent = Intent(context, SearchActivity::class.java)
+                intent.putExtra(SearchActivity.Intent_Keyword, item?.name)
+                startActivity(intent)
             }
 
         })

@@ -8,6 +8,7 @@ import com.zoe.wan.android.example.repository.data.CommonWebsiteListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.base.BaseViewModel
 import com.zoe.wan.base.SingleLiveEvent
+import com.zoe.wan.base.loading.LoadingUtils
 import kotlinx.coroutines.launch
 
 class FragSearchKeyViewModel(application: Application) : BaseViewModel(application) {
@@ -16,14 +17,19 @@ class FragSearchKeyViewModel(application: Application) : BaseViewModel(applicati
     val commonWebsiteList = SingleLiveEvent<List<CommonSearchData?>?>()
 
     init {
-        searchHotKeyList()
-        commonWebsiteList()
+        LoadingUtils.showLoading()
+        searchHotKeyList{
+            commonWebsiteList{
+                LoadingUtils.dismiss()
+            }
+        }
+
     }
 
     /**
      * 搜索热词
      */
-    fun searchHotKeyList() {
+    fun searchHotKeyList(callback:()->Unit) {
         viewModelScope.launch {
             val data: SearchHotKeyListData? = Repository.searchHotKeyList()
             if (!data.isNullOrEmpty()) {
@@ -33,13 +39,14 @@ class FragSearchKeyViewModel(application: Application) : BaseViewModel(applicati
                 }
                 searchKeyList.postValue(list)
             }
+            callback.invoke()
         }
     }
 
     /**
      * 常用网站
      */
-    fun commonWebsiteList() {
+    fun commonWebsiteList(callback:()->Unit) {
         viewModelScope.launch {
             val data: CommonWebsiteListData? = Repository.commonWebsiteList()
             if (!data.isNullOrEmpty()) {
@@ -49,6 +56,7 @@ class FragSearchKeyViewModel(application: Application) : BaseViewModel(applicati
                 }
                 commonWebsiteList.postValue(list)
             }
+            callback.invoke()
         }
 
     }

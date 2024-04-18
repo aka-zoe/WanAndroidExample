@@ -7,6 +7,7 @@ import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.base.BaseViewModel
 import com.zoe.wan.base.SingleLiveEvent
+import com.zoe.wan.base.loading.LoadingUtils
 import kotlinx.coroutines.launch
 
 class FragDetailViewModel(application: Application) : BaseViewModel(application) {
@@ -16,6 +17,7 @@ class FragDetailViewModel(application: Application) : BaseViewModel(application)
 
 
     fun knowledgeArticleList(loadMore: Boolean, cid: String, callback: () -> Unit) {
+        LoadingUtils.showLoading()
         if (loadMore) {
             pageCount++
         } else {
@@ -42,7 +44,7 @@ class FragDetailViewModel(application: Application) : BaseViewModel(application)
                 }
             }
             callback.invoke()
-
+            LoadingUtils.dismiss()
         }
     }
 }

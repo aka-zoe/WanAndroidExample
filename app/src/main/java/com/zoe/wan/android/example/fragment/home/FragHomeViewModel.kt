@@ -7,6 +7,7 @@ import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListItemData
 import com.zoe.wan.base.BaseViewModel
 import com.zoe.wan.base.SingleLiveEvent
+import com.zoe.wan.base.loading.LoadingUtils
 import kotlinx.coroutines.launch
 
 class FragHomeViewModel(application: Application) : BaseViewModel(application) {
@@ -16,10 +17,12 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
     var pageCount = 0
 
     init {
+
         initData(false){}
     }
 
     fun initData(loadMore: Boolean,callback: () -> Unit) {
+        LoadingUtils.showLoading()
         if (!loadMore) {
             pageCount = 0
             getHomeBanner()
@@ -30,6 +33,7 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
         getTopHomeList(loadMore) { topList ->
             getHomeList(loadMore,topList){
                 callback.invoke()
+                LoadingUtils.dismiss()
             }
         }
 

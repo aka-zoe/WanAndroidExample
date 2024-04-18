@@ -7,6 +7,7 @@ import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
+import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.ApiAddress.Article_List
 import com.zoe.wan.android.http.ApiAddress.Collect
@@ -18,6 +19,7 @@ import com.zoe.wan.android.http.ApiAddress.Knowledge_List_detail
 import com.zoe.wan.android.http.ApiAddress.Login
 import com.zoe.wan.android.http.ApiAddress.Logout
 import com.zoe.wan.android.http.ApiAddress.Register
+import com.zoe.wan.android.http.ApiAddress.Search
 import com.zoe.wan.android.http.ApiAddress.Search_Hot_Key
 import com.zoe.wan.android.http.ApiAddress.Top_Article_List
 import com.zoe.wan.android.http.BaseResponse
@@ -113,4 +115,12 @@ interface ApiService {
      */
     @GET(Common_Use_Website)
     suspend fun commonWebsiteList(): BaseResponse<CommonWebsiteListData?>?
+
+    /**
+     * 搜索
+     */
+    @FormUrlEncoded
+    @POST("$Search/{pageCount}/json")
+    suspend fun search(@Field("k") k: String, @Path("pageCount") pageCount: String = "0")
+        : BaseResponse<SearchResultListData?>?
 }

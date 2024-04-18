@@ -63,6 +63,8 @@ class FragHome : BaseFragment<FragmentHomeBinding, FragHomeViewModel>() {
 
     private fun initListView() {
 
+
+
         binding?.homeListView?.layoutManager = LinearLayoutManager(context)
         binding?.homeListView?.adapter = adapter
         //item点击回调

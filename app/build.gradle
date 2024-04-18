@@ -66,6 +66,11 @@ dependencies {
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
     implementation  'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
 
+    //Compose结合viewmodel与livedata使用
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
+    implementation "androidx.compose.runtime:runtime-livedata:1.6.5"
+
+
     //junit单元测试
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
