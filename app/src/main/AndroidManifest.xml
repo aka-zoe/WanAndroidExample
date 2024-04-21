@@ -29,7 +29,9 @@
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.webview.WebActivity" />
         <activity android:name=".activity.detail.KnowledgeDetailActivity" />
-        <activity android:name=".activity.search.SearchActivity"/>
+        <activity android:name=".activity.search.SearchActivity" />
+        <activity android:name=".activity.my_collects.MyCollectListActivity" />
+        <activity android:name=".activity.about_us.AboutUsActivity" />
     </application>
 
 </manifest>

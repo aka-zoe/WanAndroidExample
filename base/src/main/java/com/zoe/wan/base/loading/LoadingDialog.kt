@@ -29,18 +29,22 @@ class LoadingDialog(private val context: Context) : Dialog(context) {
             setContentView(it)
         }
 
-        window?.attributes?.gravity =Gravity.CENTER
+        window?.attributes?.gravity = Gravity.CENTER
 
     }
 
-    fun showLoading(){
+    fun showLoading() {
         animation?.let {
             binding?.loadingImage?.startAnimation(it)
         }
         super.show()
     }
 
-    fun dismissLoading(){
+    fun dialogShowing(): Boolean {
+        return isShowing
+    }
+
+    fun dismissLoading() {
         animation?.cancel()
         animation = null
         super.dismiss()

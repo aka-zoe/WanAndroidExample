@@ -1,14 +1,12 @@
 package com.zoe.wan.android.example.fragment.home
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.zoe.wan.android.example.repository.Repository
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListItemData
 import com.zoe.wan.base.BaseViewModel
 import com.zoe.wan.base.SingleLiveEvent
 import com.zoe.wan.base.loading.LoadingUtils
-import kotlinx.coroutines.launch
 
 class FragHomeViewModel(application: Application) : BaseViewModel(application) {
 
@@ -18,10 +16,10 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
 
     init {
 
-        initData(false){}
+        initData(false) {}
     }
 
-    fun initData(loadMore: Boolean,callback: () -> Unit) {
+    fun initData(loadMore: Boolean, callback: () -> Unit) {
         LoadingUtils.showLoading()
         if (!loadMore) {
             pageCount = 0
@@ -31,7 +29,7 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
         }
 
         getTopHomeList(loadMore) { topList ->
-            getHomeList(loadMore,topList){
+            getHomeList(loadMore, topList) {
                 callback.invoke()
                 LoadingUtils.dismiss()
             }
@@ -40,8 +38,12 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
 
     }
 
-    private fun getHomeList(loadMore: Boolean, topList: List<HomeListItemData?>?,callback:()->Unit) {
-        viewModelScope.launch {
+    private fun getHomeList(
+        loadMore: Boolean,
+        topList: List<HomeListItemData?>?,
+        callback: () -> Unit
+    ) {
+        launch({
             val data = Repository.getHomeList("$pageCount")
 
             if (data != null) {
@@ -58,8 +60,10 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
                 }
                 list.postValue(topList)
             }
+        }, onComplete = {
             callback.invoke()
-        }
+        })
+
     }
 
     private fun getTopHomeList(
@@ -69,37 +73,39 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
         if (loadMore) {
             callback.invoke(emptyList())
         } else {
-            viewModelScope.launch {
+            launch({
                 val data = Repository.getHomeTopList()
                 if (data != null) {
                     callback.invoke(data)
                 } else {
                     callback.invoke(emptyList())
                 }
-            }
+            }, onError = {
+                callback.invoke(emptyList())
+            })
         }
 
     }
 
     private fun getHomeBanner() {
-        viewModelScope.launch {
+        launch({
             val data = Repository.homeBanner()
             if (data != null) {
                 bannerData.postValue(data)
             }
-        }
+        })
     }
 
     /**
      * 点击收藏文章列表
      */
     fun collect(id: String, callback: () -> Unit) {
-        viewModelScope.launch {
+        launch({
             val success = Repository.collect(id)
             if (success) {
                 callback.invoke()
             }
-        }
+        })
     }
 
 
@@ -107,12 +113,12 @@ class FragHomeViewModel(application: Application) : BaseViewModel(application) {
      * 点击取消收藏文章列表
      */
     fun cancelCollect(id: String, callback: () -> Unit) {
-        viewModelScope.launch {
+        launch({
             val success = Repository.cancelCollect(id)
             if (success) {
                 callback.invoke()
             }
-        }
+        })
     }
 
 }

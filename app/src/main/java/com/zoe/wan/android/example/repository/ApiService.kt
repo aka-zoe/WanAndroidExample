@@ -6,6 +6,7 @@ import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
+import com.zoe.wan.android.example.repository.data.MyCollectListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
@@ -18,6 +19,7 @@ import com.zoe.wan.android.http.ApiAddress.Knowledge_List
 import com.zoe.wan.android.http.ApiAddress.Knowledge_List_detail
 import com.zoe.wan.android.http.ApiAddress.Login
 import com.zoe.wan.android.http.ApiAddress.Logout
+import com.zoe.wan.android.http.ApiAddress.My_Collect
 import com.zoe.wan.android.http.ApiAddress.Register
 import com.zoe.wan.android.http.ApiAddress.Search
 import com.zoe.wan.android.http.ApiAddress.Search_Hot_Key
@@ -123,4 +125,11 @@ interface ApiService {
     @POST("$Search/{pageCount}/json")
     suspend fun search(@Field("k") k: String, @Path("pageCount") pageCount: String = "0")
         : BaseResponse<SearchResultListData?>?
+
+
+    /**
+     * 我的收藏：文章列表
+     */
+    @GET("$My_Collect/{pageCount}/json")
+    suspend fun myCollect(@Path("pageCount") pageCount: String): BaseResponse<MyCollectListData?>?
 }

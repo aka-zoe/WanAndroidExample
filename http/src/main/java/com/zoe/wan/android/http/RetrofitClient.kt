@@ -48,7 +48,7 @@ class RetrofitClient {
         //设置请求头拦截器
         //设置日志拦截器
         val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
 
 
         //根据需求添加不同的拦截器
@@ -73,7 +73,9 @@ class RetrofitClient {
             .connectionPool(ConnectionPool(8, 10, TimeUnit.SECONDS)) //添加这两行代码
             .sslSocketFactory(TrustAllCerts.createSSLSocketFactory()!!, TrustAllCerts())
             .hostnameVerifier(TrustAllCerts.TrustAllHostnameVerifier())
+            .addInterceptor(TokenInterceptor())
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(PrintLogInterceptor())
             .build()
     }
 

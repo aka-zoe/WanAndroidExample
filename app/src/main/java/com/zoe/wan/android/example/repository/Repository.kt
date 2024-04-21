@@ -10,6 +10,7 @@ import com.zoe.wan.android.example.repository.data.HomeListData
 import com.zoe.wan.android.example.repository.data.HomeTopListData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.android.example.repository.data.KnowledgeListData
+import com.zoe.wan.android.example.repository.data.MyCollectListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
@@ -144,6 +145,13 @@ object Repository {
         return responseCall(data)
     }
 
+    /**
+     * 我的收藏：文章列表
+     */
+    suspend fun myCollect(pageCount: String = "0"): MyCollectListData? {
+        val data = getDefault().myCollect(pageCount = pageCount)
+        return responseCall(data)
+    }
 
     private fun responseNoDataCall(response: BaseResponse<Any?>?): Boolean {
         if (response == null) {

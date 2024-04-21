@@ -2,11 +2,13 @@ package com.zoe.wan.android.example.activity.login
 
 import android.app.Application
 import androidx.databinding.ObservableField
-import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.zoe.wan.android.example.repository.Repository
+import com.zoe.wan.android.http.HttpConstants
 import com.zoe.wan.base.BaseViewModel
-import kotlinx.coroutines.launch
+import java.util.UUID
 
 class LoginViewModel(application: Application) : BaseViewModel(application) {
 
@@ -22,13 +24,15 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
             ToastUtils.showShort("输入不能为空！")
             return
         }
-        viewModelScope.launch {
+        launch({
             val data = Repository.login(name, pwd)
+            val uuid = UUID.randomUUID().toString()
+            LogUtils.d("我的token uuid=$uuid")
+            SPUtils.getInstance().put(HttpConstants.SP_TOKEN, uuid)
             if (data != null) {
                 callback.invoke(data.username ?: "")
             }
-
-        }
+        })
     }
 
     fun register(callback: (username: String) -> Unit) {
@@ -40,11 +44,11 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
             return
         }
 
-        viewModelScope.launch {
+        launch({
             val data = Repository.register(name, pwd, repwd)
             if (data != null) {
                 callback.invoke(data.username ?: "")
             }
-        }
+        })
     }
 }

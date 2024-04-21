@@ -1,14 +1,12 @@
 package com.zoe.wan.android.example.activity.detail
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.zoe.wan.android.example.repository.Repository
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleData
 import com.zoe.wan.android.example.repository.data.KnowledgeDetailArticleListData
 import com.zoe.wan.base.BaseViewModel
 import com.zoe.wan.base.SingleLiveEvent
 import com.zoe.wan.base.loading.LoadingUtils
-import kotlinx.coroutines.launch
 
 class FragDetailViewModel(application: Application) : BaseViewModel(application) {
 
@@ -23,7 +21,7 @@ class FragDetailViewModel(application: Application) : BaseViewModel(application)
         } else {
             pageCount = 0
         }
-        viewModelScope.launch {
+        launch({
             val data: KnowledgeDetailArticleListData? = Repository.knowledgeArticleList(
                 pageCount = "$pageCount",
                 cid = cid
@@ -43,8 +41,10 @@ class FragDetailViewModel(application: Application) : BaseViewModel(application)
 
                 }
             }
+
+        }, onComplete = {
             callback.invoke()
             LoadingUtils.dismiss()
-        }
+        })
     }
 }

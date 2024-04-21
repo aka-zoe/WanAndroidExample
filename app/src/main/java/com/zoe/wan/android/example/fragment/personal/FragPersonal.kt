@@ -3,7 +3,9 @@ package com.zoe.wan.android.example.fragment.personal
 import android.content.Intent
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.BR
+import com.zoe.wan.android.example.activity.about_us.AboutUsActivity
 import com.zoe.wan.android.example.activity.login.LoginActivity
+import com.zoe.wan.android.example.activity.my_collects.MyCollectListActivity
 import com.zoe.wan.android.example.databinding.FragmentPersonalBinding
 import com.zoe.wan.base.BaseFragment
 
@@ -24,6 +26,14 @@ class FragPersonal : BaseFragment<FragmentPersonalBinding, FragPersonalViewModel
         binding?.personalLogout?.setOnClickListener {
             viewModel?.logout()
         }
+        //我的收藏
+        binding?.personalCollect?.setOnClickListener {
+            startToActivity(MyCollectListActivity::class.java, false)
+        }
+        //关于我们
+        binding?.personalAboutUs?.setOnClickListener {
+            startToActivity(AboutUsActivity::class.java, false)
+        }
     }
 
     /**
@@ -34,8 +44,14 @@ class FragPersonal : BaseFragment<FragmentPersonalBinding, FragPersonalViewModel
         if (viewModel?.showLogoutBtn?.get() == true) {
             return
         }
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
+        startToActivity(LoginActivity::class.java, true)
+    }
+
+    private fun startToActivity(clazz: Class<*>, isLogin: Boolean) {
+        val intent = Intent(context, clazz)
+        if (isLogin) {
+            intent.putExtra(LoginActivity.Intent_Type_Name, LoginActivity.Intent_Type_Value)
+        }
         startActivity(intent)
     }
 
