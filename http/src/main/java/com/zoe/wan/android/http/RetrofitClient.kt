@@ -48,7 +48,7 @@ class RetrofitClient {
         //设置请求头拦截器
         //设置日志拦截器
         val httpLoggingInterceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
 
         //根据需求添加不同的拦截器
@@ -84,17 +84,23 @@ class RetrofitClient {
      * 根据host 类型判断是否需要重新创建Client，因为一个app 有不同的BaseUrl，切换BaseUrl 就需要重新创建Client
      * 所以，就根据类型来从map中取出对应的client
      */
-    fun <T> getDefault(interfaceServer: Class<T>?): T {
-        return create(interfaceServer)
+    fun <T> getDefault(
+        interfaceServer: Class<T>?,
+        baseUrl: String = BaseUrlConstants.getHost()
+    ): T {
+        return create(interfaceServer, baseUrl)
     }
 
 
     /**
      *
      */
-    private fun <T> create(interfaceServer: Class<T>?): T {
+    private fun <T> create(
+        interfaceServer: Class<T>?,
+        baseUrl: String = BaseUrlConstants.getHost()
+    ): T {
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(BaseUrlConstants.getHost())
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(createOkHttpClient())

@@ -1,5 +1,7 @@
 package com.zoe.wan.android.example.repository
 
+import com.zoe.wan.android.example.Constants
+import com.zoe.wan.android.example.repository.data.AppUpdateInfoData
 import com.zoe.wan.android.example.repository.data.CommonWebsiteListData
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
@@ -10,6 +12,7 @@ import com.zoe.wan.android.example.repository.data.MyCollectListData
 import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
+import com.zoe.wan.android.http.ApiAddress
 import com.zoe.wan.android.http.ApiAddress.Article_List
 import com.zoe.wan.android.http.ApiAddress.Collect
 import com.zoe.wan.android.http.ApiAddress.Collect_Cancel
@@ -132,4 +135,15 @@ interface ApiService {
      */
     @GET("$My_Collect/{pageCount}/json")
     suspend fun myCollect(@Path("pageCount") pageCount: String): BaseResponse<MyCollectListData?>?
+
+
+    /**
+     * 检查APP新版本（蒲公英API，每天限额200次）
+     */
+    @POST(ApiAddress.APP_UPDATE)
+    @FormUrlEncoded
+    suspend fun appUpdateInfo(
+        @Field("_api_key") apiKey: String = Constants.PGY_API_KEY, @Field
+            ("appKey") appley: String = Constants.PGY_APP_KEY
+    ): AppUpdateInfoData?
 }

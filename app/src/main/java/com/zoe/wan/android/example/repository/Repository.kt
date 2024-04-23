@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.blankj.utilcode.util.ToastUtils
 import com.zoe.wan.android.example.activity.login.LoginActivity
+import com.zoe.wan.android.example.repository.data.AppUpdateInfoData
 import com.zoe.wan.android.example.repository.data.CommonWebsiteListData
 import com.zoe.wan.android.example.repository.data.HomeBannerData
 import com.zoe.wan.android.example.repository.data.HomeListData
@@ -15,6 +16,7 @@ import com.zoe.wan.android.example.repository.data.SearchHotKeyListData
 import com.zoe.wan.android.example.repository.data.SearchResultListData
 import com.zoe.wan.android.example.repository.data.UserData
 import com.zoe.wan.android.http.BaseResponse
+import com.zoe.wan.android.http.BaseUrlConstants
 import com.zoe.wan.android.http.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -153,6 +155,14 @@ object Repository {
         return responseCall(data)
     }
 
+    /**
+     * 检查APP新版本（蒲公英API，每天限额200次）
+     */
+    suspend fun appCheckUpdate(): AppUpdateInfoData? {
+        val data = getDefault(baseUrl = BaseUrlConstants.getPgyHost()).appUpdateInfo()
+        return data
+    }
+
     private fun responseNoDataCall(response: BaseResponse<Any?>?): Boolean {
         if (response == null) {
             showToast("请求异常！")
@@ -209,7 +219,8 @@ object Repository {
         }
     }
 
-    private fun getDefault(): ApiService {
-        return RetrofitClient.getInstance().getDefault(ApiService::class.java)
+    private fun getDefault(baseUrl: String = BaseUrlConstants.getHost()): ApiService {
+        return RetrofitClient.getInstance().getDefault(ApiService::class.java, baseUrl)
     }
+
 }

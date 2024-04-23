@@ -45,6 +45,9 @@ object ApiAddress {
     const val My_Collect= "lg/collect/list/"
 
 
+    //检测APP版本信息，是否更新
+    const val APP_UPDATE = "apiv2/app/check"
+
     /**
      * 首页文章列表
      */

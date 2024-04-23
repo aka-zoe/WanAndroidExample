@@ -1,6 +1,9 @@
 package com.zoe.wan.android.example.fragment.personal
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import com.zoe.wan.android.example.R
 import com.zoe.wan.android.example.BR
 import com.zoe.wan.android.example.activity.about_us.AboutUsActivity
@@ -33,6 +36,58 @@ class FragPersonal : BaseFragment<FragmentPersonalBinding, FragPersonalViewModel
         //关于我们
         binding?.personalAboutUs?.setOnClickListener {
             startToActivity(AboutUsActivity::class.java, false)
+        }
+
+        //检查更新
+        binding?.personalCheckUpdate?.setOnClickListener {
+            viewModel?.checkAppUpdate()
+        }
+
+        viewModel?.hasNewVersion?.observe(viewLifecycleOwner) {
+            if (it == true) {
+                //有新版本，弹窗提示更新
+                showUpdateDialog()
+            }
+        }
+    }
+
+    private fun showUpdateDialog() {
+        context?.let {
+            val dialogBuilder = AlertDialog.Builder(it)
+            dialogBuilder.setTitle("版本更新")
+            dialogBuilder.setMessage("检查到有新版本，确定更新吗？")
+            dialogBuilder.setPositiveButton("确定", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    //确定按钮事件
+                    jumpOutsideToDownload()
+                }
+            })
+
+            dialogBuilder.setNegativeButton("取消", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    //取消按钮事件
+                    dialog?.dismiss()
+                }
+            })
+            //弹窗显示
+            dialogBuilder.create().show()
+        }
+
+    }
+
+
+    private fun jumpOutsideToDownload() {
+        val downloadUrl = viewModel?.downloadUrl?.get() ?: ""
+        val uri = Uri.parse(downloadUrl)
+        val intent = Intent()
+        intent.setAction(Intent.ACTION_VIEW)
+        intent.setData(uri)
+
+        context?.let {
+//            val componentName = intent.resolveActivity(it.packageManager)
+//            if (componentName != null) {
+            it.startActivity(Intent.createChooser(intent, "请选择浏览器！"))
+//            }
         }
     }
 
